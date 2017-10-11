@@ -70,7 +70,6 @@
     args:
       chdir: "{{ gopath }}/src/github.com/dgraph-io/wisemonk/"
       creates: "{{ gopath }}/src/github.com/dgraph-io/wisemonk/wisemonk"
-
   environment:
     GOPATH:  "{{ gopath }}"
 
@@ -86,7 +85,22 @@
   register: aaroc_channels
   tags:
     - slack
+  failed_when: aaroc_channels.json.ok == false
 
+- name: debug slack token
+  debug:
+    var: slack_api_token
+    verbosity: 1
+
+- name: debug aaroc_channels
+  debug:
+    var: aaroc_channels
+    verbosity: 1
+
+- name: debug channel params
+  debug:
+    var: channel_params
+    verbosity: 1
 
 - name: Provide the config
   template:
